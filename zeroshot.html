@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1f1f1f;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(212, 175, 55, 0.2);
+            overflow: hidden;
+            border: 2px solid #d4af37;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #d4af37;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 3px solid #d4af37;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #bbb;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-section h2 {
+            color: #d4af37;
+            margin-bottom: 25px;
+            font-size: 20px;
+            border-bottom: 3px solid #d4af37;
+            padding-bottom: 10px;
+            text-shadow: 0 1px 5px rgba(212, 175, 55, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d4af37;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        label .required {
+            color: #ff6b6b;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        input::placeholder,
+        select {
+            color: #888;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            background: #333;
+        }
+
+        input.error {
+            border-color: #ff6b6b;
+        }
+
+        input.error:focus {
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            color: #000;
+            border: 2px solid #d4af37;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+        }
+
+        .btn-clear {
+            background: #2d2d2d;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+        }
+
+        .btn-clear:hover {
+            background: #3d3d3d;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .status-message.success {
+            display: block;
+            background: #1a4d2e;
+            color: #90EE90;
+            border: 2px solid #d4af37;
+        }
+
+        .status-message.error {
+            display: block;
+            background: #4a1a1a;
+            color: #ff6b6b;
+            border: 2px solid #ff6b6b;
+        }
+
+        .students-section h2 {
+            color: #d4af37;
+            margin-bottom: 25px;
+            font-size: 20px;
+            border-bottom: 3px solid #d4af37;
+            padding-bottom: 10px;
+            text-shadow: 0 1px 5px rgba(212, 175, 55, 0.2);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+            color: #d4af37;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #d4af37;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .stat-card p {
+            font-size: 12px;
+            color: #bbb;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 2px 5px rgba(212, 175, 55, 0.3);
+        }
+
+        .students-list {
+            background: #2d2d2d;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 0;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .student-item {
+            padding: 15px;
+            border-bottom: 1px solid #3d3d3d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .student-item:last-child {
+            border-bottom: none;
+        }
+
+        .student-item:hover {
+            background: #363636;
+            border-left: 4px solid #d4af37;
+            padding-left: 11px;
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: #d4af37;
+            margin-bottom: 5px;
+            text-shadow: 0 1px 3px rgba(212, 175, 55, 0.2);
+        }
+
+        .student-details {
+            font-size: 13px;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        .student-details span {
+            margin-right: 15px;
+        }
+
+        .btn-delete {
+            background: #b94a4a;
+            color: white;
+            padding: 6px 12px;
+            border: 2px solid #d4af37;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-delete:hover {
+            background: #8b0000;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+            transform: scale(1.05);
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px 20px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-export {
+            flex: 1;
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d6b47 100%);
+            color: #d4af37;
+            padding: 10px;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-export:hover {
+            background: linear-gradient(135deg, #2d6b47 0%, #3d8b57 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-clear-all {
+            flex: 1;
+            background: #4a2a2a;
+            color: #d4af37;
+            padding: 10px;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-clear-all:hover {
+            background: #6a3a3a;
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Scrollbar styling */
+        .students-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .students-list::-webkit-scrollbar-track {
+            background: #2d2d2d;
+            border-radius: 10px;
+        }
+
+        .students-list::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 10px;
+        }
+
+        .students-list::-webkit-scrollbar-thumb:hover {
+            background: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Student Registration Form</h1>
+            <p>Register students with their personal information</p>
+        </div>
+
+        <div class="content">
+            <!-- Left Section - Registration Form -->
+            <div class="form-section">
+                <h2>Student Information</h2>
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="name">Full Name <span class="required">*</span></label>
+                        <input type="text" id="name" placeholder="Enter student's full name">
+                        <div class="error-message" id="nameError"></div>
+                        <div class="help-text">Letters and spaces only</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" placeholder="student@email.com">
+                        <div class="error-message" id="emailError"></div>
+                        <div class="help-text">e.g., student@email.com</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="text" id="phone" placeholder="Enter 10-digit phone number" maxlength="14">
+                        <div class="error-message" id="phoneError"></div>
+                        <div class="help-text">10 digits (auto-formatted: 123-456-7890)</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="class">Class <span class="required">*</span></label>
+                        <select id="class">
+                            <option value="">-- Select Class --</option>
+                            <option value="10th">10th</option>
+                            <option value="11th">11th</option>
+                            <option value="12th">12th</option>
+                            <option value="Freshman">Freshman</option>
+                            <option value="Sophomore">Sophomore</option>
+                            <option value="Junior">Junior</option>
+                            <option value="Senior">Senior</option>
+                        </select>
+                        <div class="error-message" id="classError"></div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn-register">Register Student</button>
+                        <button type="button" class="btn-clear" onclick="clearForm()">Clear Form</button>
+                    </div>
+                </form>
+
+                <div id="statusMessage" class="status-message"></div>
+            </div>
+
+            <!-- Right Section - Students List -->
+            <div class="students-section">
+                <h2>Registered Students</h2>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <p>Total Students</p>
+                        <div class="number" id="totalCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <p>Last Registered</p>
+                        <div class="number" id="lastRegistered" style="font-size: 14px; margin-top: 5px;">-</div>
+                    </div>
+                </div>
+
+                <div id="studentsList" class="students-list">
+                    <div class="empty-message">No students registered yet.</div>
+                </div>
+
+                <div class="export-buttons">
+                    <button class="btn-export" onclick="exportCSV()">📥 Export to CSV</button>
+                    <button class="btn-clear-all" onclick="clearAllData()">🗑️ Clear All</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load students from localStorage on page load
+        let students = JSON.parse(localStorage.getItem('students')) || [];
+
+        // Update student list on page load
+        window.addEventListener('DOMContentLoaded', function () {
+            displayStudents();
+            document.getElementById('registrationForm').addEventListener('submit', registerStudent);
+        });
+
+        // Format phone number
+        document.getElementById('phone').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) {
+                value = value.slice(0, 10);
+            }
+            if (value.length >= 6) {
+                e.target.value = value.slice(0, 3) + '-' + value.slice(3, 6) + '-' + value.slice(6);
+            } else if (value.length >= 3) {
+                e.target.value = value.slice(0, 3) + '-' + value.slice(3);
+            } else {
+                e.target.value = value;
+            }
+        });
+
+        function validateInputs() {
+            let isValid = true;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value;
+            const classVal = document.getElementById('class').value;
+
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('input, select').forEach(el => el.classList.remove('error'));
+
+            // Validate name
+            if (!name) {
+                showError('nameError', 'Name field cannot be empty!');
+                isValid = false;
+            } else if (!/^[a-zA-Z\s]+$/.test(name)) {
+                showError('nameError', 'Name should only contain letters and spaces!');
+                isValid = false;
+            }
+
+            // Validate email
+            if (!email) {
+                showError('emailError', 'Email field cannot be empty!');
+                isValid = false;
+            } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+                showError('emailError', 'Please enter a valid email address!');
+                isValid = false;
+            } else if (students.some(s => s.email.toLowerCase() === email.toLowerCase())) {
+                showError('emailError', 'This email is already registered!');
+                isValid = false;
+            }
+
+            // Validate phone
+            const phoneDigits = phone.replace(/\D/g, '');
+            if (!phone) {
+                showError('phoneError', 'Phone number field cannot be empty!');
+                isValid = false;
+            } else if (phoneDigits.length !== 10) {
+                showError('phoneError', 'Phone number must be exactly 10 digits!');
+                isValid = false;
+            } else if (students.some(s => s.phone === phoneDigits)) {
+                showError('phoneError', 'This phone number is already registered!');
+                isValid = false;
+            }
+
+            // Validate class
+            if (!classVal) {
+                showError('classError', 'Please select a class!');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            const inputElement = errorElement.previousElementSibling;
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+            inputElement.classList.add('error');
+        }
+
+        function registerStudent(e) {
+            e.preventDefault();
+
+            if (!validateInputs()) {
+                return;
+            }
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.replace(/\D/g, '');
+            const classVal = document.getElementById('class').value;
+            const registeredOn = new Date().toLocaleString();
+
+            const student = {
+                id: Date.now(),
+                name,
+                email,
+                phone,
+                class: classVal,
+                registeredOn
+            };
+
+            students.push(student);
+            localStorage.setItem('students', JSON.stringify(students));
+
+            // Show success message
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = `✓ Student '${name}' registered successfully!`;
+            statusMessage.className = 'status-message success';
+            setTimeout(() => {
+                statusMessage.className = 'status-message';
+            }, 3000);
+
+            clearForm();
+            displayStudents();
+        }
+
+        function clearForm() {
+            document.getElementById('registrationForm').reset();
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('input, select').forEach(el => el.classList.remove('error'));
+            document.getElementById('name').focus();
+        }
+
+        function displayStudents() {
+            const studentsList = document.getElementById('studentsList');
+            const totalCount = document.getElementById('totalCount');
+            const lastRegistered = document.getElementById('lastRegistered');
+
+            totalCount.textContent = students.length;
+
+            if (students.length === 0) {
+                studentsList.innerHTML = '<div class="empty-message">No students registered yet.</div>';
+                lastRegistered.textContent = '-';
+                return;
+            }
+
+            lastRegistered.textContent = students[students.length - 1].name.split(' ')[0];
+
+            studentsList.innerHTML = students.map(student => `
+                <div class="student-item">
+                    <div class="student-info">
+                        <div class="student-name">${student.name}</div>
+                        <div class="student-details">
+                            <span>📧 ${student.email}</span>
+                            <span>📱 ${formatPhone(student.phone)}</span>
+                            <span>🎓 ${student.class}</span>
+                        </div>
+                    </div>
+                    <button class="btn-delete" onclick="deleteStudent(${student.id})">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        function formatPhone(phone) {
+            return phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        }
+
+        function deleteStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (confirm(`Delete '${student.name}'? This action cannot be undone.`)) {
+                students = students.filter(s => s.id !== id);
+                localStorage.setItem('students', JSON.stringify(students));
+                displayStudents();
+
+                const statusMessage = document.getElementById('statusMessage');
+                statusMessage.textContent = `✓ Student '${student.name}' deleted successfully!`;
+                statusMessage.className = 'status-message success';
+                setTimeout(() => {
+                    statusMessage.className = 'status-message';
+                }, 3000);
+            }
+        }
+
+        function exportCSV() {
+            if (students.length === 0) {
+                alert('No students to export!');
+                return;
+            }
+
+            let csv = 'S.No,Name,Email,Phone,Class,Registered On\n';
+            students.forEach((student, index) => {
+                csv += `${index + 1},"${student.name}","${student.email}","${formatPhone(student.phone)}","${student.class}","${student.registeredOn}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `students_export_${new Date().toISOString().slice(0, 10)}.csv`);
+            link.click();
+        }
+
+        function clearAllData() {
+            if (students.length === 0) {
+                alert('No data to clear!');
+                return;
+            }
+
+            if (confirm(`Clear all ${students.length} student records? This action cannot be undone!`)) {
+                students = [];
+                localStorage.removeItem('students');
+                displayStudents();
+
+                const statusMessage = document.getElementById('statusMessage');
+                statusMessage.textContent = '✓ All student data cleared!';
+                statusMessage.className = 'status-message success';
+                setTimeout(() => {
+                    statusMessage.className = 'status-message';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
